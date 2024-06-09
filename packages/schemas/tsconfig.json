@@ -1,0 +1,11 @@
+{
+  "extends": "@products-app/tsconfig/base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "CommonJS"
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

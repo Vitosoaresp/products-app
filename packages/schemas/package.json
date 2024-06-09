@@ -1,0 +1,28 @@
+{
+  "name": "@products-app/schemas",
+  "private": true,
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "start": "pnpm build && node dist/index.js",
+    "lint": "eslint . --ext .ts"
+  },
+  "dependencies": {
+    "mongoose": "^6.6.5",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@products-app/eslint-config": "workspace:*",
+    "@products-app/prettier": "workspace:*",
+    "@products-app/tsconfig": "workspace:*",
+    "typescript": "^5.4.5"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@products-app"
+    ]
+  },
+  "prettier": "@products-app/prettier"
+}
