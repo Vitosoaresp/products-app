@@ -15,7 +15,6 @@
 		"strict": true,
 		"jsx": "react-jsx",
 		"lib": ["DOM", "ES2015"],
-		"module": "ESNext",
-		"target": "es6"
+		"module": "ESNext"
 	}
 }

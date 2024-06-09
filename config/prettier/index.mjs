@@ -4,12 +4,12 @@
 /** @type { PrettierConfig } */
 const config = {
   plugins: ["prettier-plugin-tailwindcss"],
-  // tailwindConfig: "../../apps/web/tailwind.config.js",
-  jsxSingleQuote: true,
-  singleQuote: false,
-  arrowParens: 'avoid',
-  trailingComma: 'all',
-  endOfLine: 'lf',
+  tailwindConfig: "../../apps/web/tailwind.config.js",
+  jsxSingleQuote: false,
+  singleQuote: true,
+  arrowParens: "avoid",
+  trailingComma: "all",
+  endOfLine: "lf",
 }
 
 export default config
