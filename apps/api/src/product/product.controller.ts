@@ -3,19 +3,16 @@ import {
   Controller,
   Delete,
   Get,
-  HttpStatus,
   Param,
   Post,
   Put,
-  Req,
-  Res,
-  UsePipes,
+  Query,
+  UsePipes
 } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
-import { Product, ProductDto, productSchema } from "@products-app/schemas";
-import { Request, Response } from "express";
-import { IFindAllParams } from "types/commom";
+import { ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { productSchema } from "@products-app/schemas";
 import { ZodValidationPipe } from "../pipes/zod";
+import { ListProductsParams, ListProductsResponse, ProductSchema, ProductSchemaDto } from "./product.schema";
 import { ProductService } from "./product.service";
 
 @Controller("products")
@@ -24,41 +21,49 @@ export class ProductController {
   constructor(private _service: ProductService) {}
 
   @Get()
+  @ApiResponse({ status: 200, type: ListProductsResponse })
   async findAll(
-    @Req() req: Request<unknown, unknown, unknown, IFindAllParams<Product>>,
-    @Res() res: Response,
+    @Query() query: ListProductsParams,
   ) {
-    const response = await this._service.findAll(req.query);
+    const response = await this._service.findAll(query);
 
-    return res.json(response);
+    return response;
   }
 
   @Post()
+  @ApiResponse({ status: 201, description: "Product created", type: ProductSchema })
+  @ApiResponse({ status: 400, description: "Bad request" })
   @UsePipes(new ZodValidationPipe(productSchema))
-  async create(@Res() res: Response, @Body() payload: ProductDto) {
+  async create(@Body() payload: ProductSchemaDto) {
     const product = await this._service.create(payload);
-    return res.status(HttpStatus.CREATED).json(product);
+    return product;
   }
 
   @Get(":slug")
-  async findOne(@Res() res: Response, @Param() params: { slug: string }) {
+  @ApiParam({ name: "slug", required: true })
+  @ApiResponse({ status: 200, description: "Product found", type: ProductSchema })
+  @ApiResponse({ status: 404, description: "Product not found" })
+  async findOne(@Param() params: { slug: string }) {
     const product = await this._service.findOne(params.slug);
-    return res.json(product);
+    return product
   }
 
   @Put(":slug")
+  @ApiParam({ name: "slug", required: true })
   @UsePipes(new ZodValidationPipe(productSchema))
+  @ApiResponse({ status: 200, description: "Product updated", type: ProductSchema })
+  @ApiResponse({ status: 400, description: "Bad request" })
   async update(
-    @Req() req: Request<{ slug: string }, unknown, ProductDto>,
-    @Res() res: Response,
+    @Param() param: { slug: string },
+    @Body() payload: ProductSchemaDto,
   ) {
-    const product = await this._service.update(req.params.slug, req.body);
-    return res.json(product);
+    const product = await this._service.update(param.slug, payload);
+    return product
   }
 
   @Delete(":slug")
-  async delete(@Res() res: Response, @Param() params: { slug: string }) {
-    await this._service.delete(params.slug);
-    return res.status(HttpStatus.NO_CONTENT).send();
+  @ApiParam({ name: "slug", required: true })
+  async delete(@Param() params: { slug: string }) {
+    return await this._service.delete(params.slug);
   }
 }
