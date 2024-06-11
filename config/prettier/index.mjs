@@ -9,7 +9,6 @@ const config = {
   singleQuote: true,
   arrowParens: "avoid",
   trailingComma: "all",
-  endOfLine: "lf",
 }
 
 export default config
