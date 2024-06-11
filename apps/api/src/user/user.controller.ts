@@ -11,13 +11,14 @@ import {
   Res,
   UsePipes,
 } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiParam, ApiTags } from "@nestjs/swagger";
 import { User, UserDto, userSchema } from "@products-app/schemas";
 import { Request, Response } from "express";
 import { ZodValidationPipe } from "pipes/zod";
 import { UserService } from "./user.service";
 
 @Controller("users")
+@ApiBearerAuth()
 @ApiTags("User")
 export class UserController {
   constructor(private _service: UserService) {}
@@ -27,9 +28,10 @@ export class UserController {
     return this._service.findAll();
   }
 
-  @Get(":email")
-  async findOne(@Param() params: { email: string }, @Res() res: Response) {
-    const user = await this._service.findOne(params.email);
+  @Get(":id")
+  @ApiParam({ name: "id", required: true })
+  async findOne(@Param() params: { id: string }, @Res() res: Response) {
+    const user = await this._service.findOne(params.id);
 
     user.password = undefined;
 

@@ -8,26 +8,31 @@ export class UserService {
   constructor(@Inject("USER_MODEL") private _model: Model<User>) {}
 
   async findAll(): Promise<User[]> {
-    return this._model.find().exec();
+    return this._model.find({}, { password: false }).exec();
   }
 
-  async findOne(email: string): Promise<User> {
-    return this._model.findOne({ email })
-    .exec()
-    .then(user => {
-      if (!user) {
-        throw new NotFoundException(`User with email ${email} not found`)
-      }
-      return user;
-    })
+  async findOne(param: string): Promise<User> {
+    return this._model
+      .findOne({ $or: [{ _id: param }, { email: param }] })
+      .exec()
+      .then((user) => {
+        if (!user) {
+          throw new NotFoundException();
+        }
+        return user;
+      });
   }
 
   async create(payload: UserDto): Promise<User> {
-    const existingUser = await this._model.findOne({
-      email: payload.email,
-    }).exec();
+    const existingUser = await this._model
+      .findOne({
+        email: payload.email,
+      })
+      .exec();
     if (existingUser) {
-      throw new NotFoundException(`User with email ${payload.email} already exists`);
+      throw new NotFoundException(
+        `User with email ${payload.email} already exists`,
+      );
     }
 
     const encriptedPassword = await encrypt(payload.password);
@@ -43,31 +48,48 @@ export class UserService {
   }
 
   async update(id: string, payload: UserDto): Promise<User> {
-    const existingUser = await this._model.findOne({ email: payload.email }).exec();
+    const existingUser = await this._model
+      .findOne({ email: payload.email })
+      .exec();
     if (existingUser) {
-      throw new NotFoundException(`User with email ${payload.email} already exists`);
+      throw new NotFoundException(
+        `User with email ${payload.email} already exists`,
+      );
     }
 
-    return this._model.findByIdAndUpdate(id, {
-      ...payload,
-      updatedAt: new Date(),
-    }, { new: true }).exec().then(user => {
-      if (!user) {
-        throw new NotFoundException(`User with id ${id} not found`);
-      }
-      return user;
-    })
+    return this._model
+      .findByIdAndUpdate(
+        id,
+        {
+          ...payload,
+          updatedAt: new Date(),
+        },
+        { new: true },
+      )
+      .exec()
+      .then((user) => {
+        if (!user) {
+          throw new NotFoundException(`User with id ${id} not found`);
+        }
+        return user;
+      });
   }
 
   async delete(id: string): Promise<User> {
-    return this._model.findOneAndUpdate({
-      _id: id
-    }, {
-      $set: {
-        deletedAt: new Date()
-      }
-    }, {
-      new: true
-    }).exec();
+    return this._model
+      .findOneAndUpdate(
+        {
+          _id: id,
+        },
+        {
+          $set: {
+            deletedAt: new Date(),
+          },
+        },
+        {
+          new: true,
+        },
+      )
+      .exec();
   }
 }
