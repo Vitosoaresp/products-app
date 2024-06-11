@@ -18,7 +18,7 @@ import { ZodValidationPipe } from "pipes/zod";
 import { UserService } from "./user.service";
 
 @Controller("users")
-@ApiTags("user")
+@ApiTags("User")
 export class UserController {
   constructor(private _service: UserService) {}
 

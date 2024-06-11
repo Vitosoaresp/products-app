@@ -8,9 +8,9 @@ async function bootstrap() {
     .setTitle("Products API")
     .setVersion("1.0")
     .setDescription("The products API description")
-    .addTag("product")
-    .addTag("user")
-    .addTag("auth")
+    .addTag("Product")
+    .addTag("User")
+    .addTag("Auth")
     .addBearerAuth()
     .build();
 

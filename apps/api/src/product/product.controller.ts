@@ -16,7 +16,7 @@ import { ListProductsParams, ListProductsResponse, ProductSchema, ProductSchemaD
 import { ProductService } from "./product.service";
 
 @Controller("products")
-@ApiTags("product")
+@ApiTags("Product")
 export class ProductController {
   constructor(private _service: ProductService) {}
 

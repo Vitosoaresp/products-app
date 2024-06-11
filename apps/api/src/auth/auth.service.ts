@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { Signin, SigninResponse } from "@products-app/schemas";
+import { Signin, SigninResponse, User, UserDto } from "@products-app/schemas";
 import { UserService } from "../user/user.service";
 import { compare } from "../utils/bcrypt";
 
@@ -25,5 +25,8 @@ export class AuthService {
     };
   }
 
-  // async register(email: string): Promise<User> {}
+  async register(data: UserDto): Promise<User> {
+    const user = await this._userService.create(data);
+    return user;
+  }
 }
