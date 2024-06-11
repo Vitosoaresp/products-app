@@ -10,10 +10,15 @@ import { ProductService } from "./product.service";
 @Module({
   imports: [DatabaseModule],
   controllers: [ProductController],
-  providers: [ProductService, ...productProviders, UserService, ...userProviders],
+  providers: [
+    ProductService,
+    ...productProviders,
+    UserService,
+    ...userProviders,
+  ],
 })
 export class ProductModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-      consumer.apply(AuthMiddleware).forRoutes(ProductController);
+    consumer.apply(AuthMiddleware).forRoutes(ProductController);
   }
 }
