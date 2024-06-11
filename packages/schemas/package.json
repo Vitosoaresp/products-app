@@ -4,13 +4,11 @@
   "version": "0.0.0",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "tsc --watch",
     "build": "tsc",
-    "start": "pnpm build && node dist/index.js",
     "lint": "eslint . --ext .ts"
   },
   "dependencies": {
-    "mongoose": "^6.6.5",
+    "mongoose": "^6.6.7",
     "zod": "^3.23.8"
   },
   "devDependencies": {

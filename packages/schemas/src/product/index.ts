@@ -4,11 +4,11 @@ import { z } from "zod";
 export const productSchema = z
   .object({
     name: z.string().min(2),
-    code: z.number().int().positive(),
-    price: z.number().positive(),
+    code: z.coerce.number().int().positive(),
+    price: z.coerce.number().positive(),
     description: z.string().nullish(),
     category: z.string().nullish(),
-    quantity: z.number().int().positive().default(0).nullish(),
+    quantity: z.coerce.number().int().gte(0).default(0).nullish(),
   }).required();
 
 export type ProductDto = z.infer<typeof productSchema>;
