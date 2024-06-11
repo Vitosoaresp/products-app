@@ -1,7 +1,19 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res, UsePipes } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Req,
+  Res,
+  UsePipes,
+} from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { User, UserDto, userSchema } from "@products-app/schemas";
-import { Response } from "express";
+import { Request, Response } from "express";
 import { ZodValidationPipe } from "pipes/zod";
 import { UserService } from "./user.service";
 
@@ -34,11 +46,10 @@ export class UserController {
   @Put(":id")
   @UsePipes(new ZodValidationPipe(userSchema))
   async update(
-    @Param() params: { id: string },
-    @Body() payload: UserDto,
+    @Req() req: Request<{ id: string }, unknown, UserDto>,
     @Res() res: Response,
   ) {
-    const user = await this._service.update(params.id, payload);
+    const user = await this._service.update(req.params.id, req.body);
     return res.json(user);
   }
 
@@ -47,5 +58,4 @@ export class UserController {
     await this._service.delete(params.id);
     return res.status(HttpStatus.NO_CONTENT).send();
   }
-
 }
