@@ -6,7 +6,10 @@ import { compare } from "../utils/bcrypt";
 
 @Injectable()
 export class AuthService {
-  constructor(private _userService: UserService, private _jwtService: JwtService) {}
+  constructor(
+    private _userService: UserService,
+    private _jwtService: JwtService,
+  ) {}
 
   async signin(payload: Signin): Promise<SigninResponse> {
     const user = await this._userService.findOne(payload.email);
@@ -27,6 +30,7 @@ export class AuthService {
 
   async register(data: UserDto): Promise<User> {
     const user = await this._userService.create(data);
+    delete user.password;
     return user;
   }
 }
