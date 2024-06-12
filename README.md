@@ -1,81 +1,77 @@
-# Turborepo starter
+# Produtos App - Monorepo com TurboRepo
 
-This is an official starter Turborepo.
+## Visão Geral
 
-## Using this example
+Este monorepo é gerenciado pelo [TurboRepo](https://turborepo.org/) e contém uma aplicação full-stack para gerenciamento de produtos. Ele inclui um backend com uma API RESTful construída com [NestJS](https://nestjs.com/) e um frontend para interface de usuário construído com [Next.js](https://nextjs.org/).
 
-Run the following command:
+## Estrutura do Monorepo
 
-```sh
-npx create-turbo@latest
-```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+A estrutura do monorepo é organizada para facilitar a navegação e a manutenção de múltiplos projetos relacionados. Aqui está uma visão geral dos diretórios principais e suas funcionalidades:
 
 ```
-cd my-turborepo
-pnpm build
+/products-app
+│
+├── /apps
+│   ├── /api              # Aplicação backend com NestJS
+│   └── /web         # Aplicação frontend com Next.js
+│
+├── /config
+│   └── /eslint           # Configurações eslint
+│   └── /tsconfig         # Typescript configs
+│   └── /prettier         # Configurações do prettier
+|
+├── /packages
+│   ├── /schemas          # Definições de esquemas com Mongoose e validação com Zod
+│
+│
+├── /node_modules         # Módulos npm instalados
+│
+├── /turbo.json           # Configuração do TurboRepo
+│
+├── /package.json         # Dependências e scripts de npm para o monorepo
+│
+└── /README.md            # Documentação principal do monorepo
 ```
 
-### Develop
+## Configuração e Dependências
 
-To develop all apps and packages, run the following command:
+1. **Instalar Dependências**:
 
-```
-cd my-turborepo
-pnpm dev
-```
+   Execute o comando abaixo na raiz do monorepo para instalar todas as dependências necessárias para todos os pacotes e aplicações:
 
-### Remote Caching
+   ```bash
+   pnpm install
+   ```
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+2. **Configuração de Ambiente**:
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+   Verifique em cada diretorio (api / web) as configurações de variaveis de ambiente
 
-```
-cd my-turborepo
-npx turbo login
-```
+3. **Executar Aplicação**:
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+   Use os seguintes comandos para iniciar as aplicações em modo de desenvolvimento:
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+   ```bash
+   turbo dev
+   ```
 
-```
-npx turbo link
-```
+   As aplicações estarão disponíveis nas URLs correspondentes:
+   - API: `http://localhost:3333`
+   - Frontend: `http://localhost:3000`
+  
+## Fotos
 
-## Useful Links
+![Captura de tela de 2024-06-12 01-03-35](https://github.com/Vitosoaresp/products-app/assets/23152592/30037131-0638-4339-9af8-cfb59aed07b0)
+![Captura de tela de 2024-06-12 01-03-16](https://github.com/Vitosoaresp/products-app/assets/23152592/8beced87-0a7e-4835-96d4-d5e85b99ff2f)
+![Captura de tela de 2024-06-12 01-03-50](https://github.com/Vitosoaresp/products-app/assets/23152592/57dd1b49-ad50-48df-8736-3469a9e60e19)
 
-Learn more about the power of Turborepo:
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+## Contribuição
+
+Contribuições são bem-vindas! Para contribuir:
+
+1. Faça um fork do repositório.
+2. Crie uma nova branch: `git checkout -b minha-nova-funcionalidade`.
+3. Faça suas modificações e adicione commits: `git commit -m 'Adiciona nova funcionalidade'`.
+4. Envie para o repositório remoto: `git push origin minha-nova-funcionalidade`.
+5. Abra um pull request para revisão.
