@@ -14,7 +14,6 @@ import { UserService } from "./user.service";
   controllers: [UserController],
   providers: [
     UserService,
-    // ...userProviders
   ],
 })
 export class UserModule implements NestModule {

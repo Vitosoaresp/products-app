@@ -28,7 +28,6 @@ import { jwtConstants } from "./constants";
   providers: [
     AuthService,
     UserService,
-    // ...userProviders
   ],
 })
 export class AuthModule implements NestModule {

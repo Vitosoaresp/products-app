@@ -8,7 +8,7 @@ import { UserModule } from "./user/user.module";
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.DATABASE_URL),
+    MongooseModule.forRoot(process.env.DATABASE_URL ?? "mongodb://root:root@localhost"),
     ProductModule,
     UserModule,
     AuthModule,
