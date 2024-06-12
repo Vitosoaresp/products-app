@@ -34,6 +34,8 @@ Este projeto é uma API RESTful desenvolvida com NodeJS e NestJS para o gerencia
 
 ## Configuração
 
+> Caso tenha docker instalado rode o script pnpm db:setup para subir um container docker com o mongodb 
+
 1. Crie um arquivo `.env` na raiz da pasta api do projeto com as seguintes variáveis:
    ```plaintext
    DATABASE_URL=mongodb://localhost:27017/seu-banco-de-dados
