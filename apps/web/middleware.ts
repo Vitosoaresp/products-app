@@ -13,8 +13,12 @@ export function middleware(req: NextRequest) {
 
 		return NextResponse.redirect(new URL('/sign-in', req.url), { status: 303 });
 	}
+
+	if (token && req.nextUrl.pathname === '/') {
+		return NextResponse.redirect(new URL('/products', req.url), { status: 303 });
+	}
 }
 
 export const config = {
-	matcher: ['/me', '/products/:slug*', '/products'],
+	matcher: ['/me', '/products/:slug*', '/products', '/'],
 };
