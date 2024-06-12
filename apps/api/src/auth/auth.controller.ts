@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Post, Req, Res } from "@nestjs/common";
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
-  ApiHeader,
   ApiResponse,
-  ApiTags,
+  ApiTags
 } from "@nestjs/swagger";
 import { Request, Response } from "express";
 import {
@@ -38,10 +38,7 @@ export class AuthController {
   }
 
   @Get("me")
-  @ApiHeader({
-    name: "Authorization",
-    description: "Bearer token",
-  })
+  @ApiBearerAuth()
   @ApiResponse({ status: 200, description: "User found", type: AuthMeResponse })
   @ApiResponse({ status: 401, description: "Unauthorized" })
   async me(@Res() res: Response, @Req() req: Request) {
