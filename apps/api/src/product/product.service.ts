@@ -1,19 +1,18 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
 import { Product, ProductDto } from "@products-app/schemas";
 import { Model } from "mongoose";
 import { IFindAllParams, IPaginationResponse } from "../types/commom";
 import { generateSlug } from "../utils/generate-slug";
-import { ProductSchema } from "./product.schema";
 
 @Injectable()
 export class ProductService {
   constructor(
-    @InjectModel(ProductSchema.name) private _model: Model<Product>,
+    @Inject("PRODUCT_MODEL") private _model: Model<Product>,
   ) {}
 
   async findAll({

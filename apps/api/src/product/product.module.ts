@@ -1,25 +1,26 @@
 import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
-import { MongooseModule } from "@nestjs/mongoose";
+import { DatabaseModule } from "../database/database.module";
 import { AuthMiddleware } from "../middlewares/auth.middleware";
-import { UserSchema, UserSchemaFactory } from "../user/user.schema";
+import { userProviders } from "../user/user.providers";
 import { UserService } from "../user/user.service";
 import { ProductController } from "./product.controller";
-import { ProductSchema, ProductSchemaFactory } from "./product.schema";
+import { productProviders } from "./product.providers";
 import { ProductService } from "./product.service";
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { schema: ProductSchemaFactory, name: ProductSchema.name },
-      { schema: UserSchemaFactory, name: UserSchema.name },
-    ]),
+    // MongooseModule.forFeature([
+    //   { schema: ProductSchemaFactory, name: ProductSchema.name },
+    //   { schema: UserSchemaFactory, name: UserSchema.name },
+    // ]),
+    DatabaseModule,
   ],
   controllers: [ProductController],
   providers: [
     ProductService,
-    // ...productProviders,
+    ...productProviders,
     UserService,
-    // ...userProviders,
+    ...userProviders,
   ],
 })
 export class ProductModule implements NestModule {

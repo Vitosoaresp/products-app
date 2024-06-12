@@ -1,11 +1,13 @@
 import { BadRequestException, NotFoundException } from "@nestjs/common";
-import { MongooseModule, getModelToken } from "@nestjs/mongoose";
+import { getModelToken } from "@nestjs/mongoose";
 import { Test, TestingModule } from "@nestjs/testing";
 import { Product } from "@products-app/schemas";
 import { Model } from "mongoose";
-import { database } from "../../test/constant";
 import { mockProductDto, productMock } from "../../test/mocks/product";
-import { ProductSchema, ProductSchemaFactory } from "./product.schema";
+import { DatabaseModule } from "../database/database.module";
+import { userProviders } from "../user/user.providers";
+import { ProductModule } from "./product.module";
+import { productProviders } from "./product.providers";
 import { ProductService } from "./product.service";
 
 const mockProductModel = {
@@ -41,22 +43,22 @@ describe('Product Service', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        MongooseModule.forFeature([
-          { schema: ProductSchemaFactory, name: ProductSchema.name },
-        ]),
-        MongooseModule.forRoot(database)
+        DatabaseModule,
+        ProductModule,
       ],
       providers: [
         ProductService,
+        ...productProviders,
+        ...userProviders,
         {
-          provide: getModelToken(ProductSchema.name),
+          provide: getModelToken("PRODUCT_MODEL"),
           useValue: mockProductModel,
         },
       ],
     }).compile();
 
     service = module.get<ProductService>(ProductService);
-    model = module.get<Model<Product>>(getModelToken(ProductSchema.name));
+    model = module.get<Model<Product>>(getModelToken("PRODUCT_MODEL"));
   });
 
   it('should be defined', () => {

@@ -1,13 +1,11 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { User, UserDto } from "@products-app/schemas";
 import { Model } from "mongoose";
 import { encrypt } from "../utils/bcrypt";
-import { UserSchema } from "./user.schema";
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(UserSchema.name) private _model: Model<User>) {}
+  constructor(@Inject("USER_MODEL") private _model: Model<User>) {}
 
   async findAll(): Promise<User[]> {
     return this._model.find({}, { password: false }).exec();

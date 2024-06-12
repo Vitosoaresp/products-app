@@ -5,9 +5,9 @@ import {
   RequestMethod,
 } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
-import { MongooseModule } from "@nestjs/mongoose";
+import { DatabaseModule } from "../database/database.module";
 import { AuthMiddleware } from "../middlewares/auth.middleware";
-import { UserSchema, UserSchemaFactory } from "../user/user.schema";
+import { userProviders } from "../user/user.providers";
 import { UserService } from "../user/user.service";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
@@ -15,9 +15,10 @@ import { jwtConstants } from "./constants";
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { schema: UserSchemaFactory, name: UserSchema.name },
-    ]),
+    // MongooseModule.forFeature([
+    //   { schema: UserSchemaFactory, name: UserSchema.name },
+    // ]),
+    DatabaseModule,
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
@@ -28,6 +29,7 @@ import { jwtConstants } from "./constants";
   providers: [
     AuthService,
     UserService,
+    ...userProviders,
   ],
 })
 export class AuthModule implements NestModule {
