@@ -1,3 +1,4 @@
+import { Schema, SchemaFactory } from "@nestjs/mongoose";
 import { ApiProperty } from "@nestjs/swagger";
 import { Product, ProductDto } from "@products-app/schemas";
 import { SortOrder } from "mongoose";
@@ -23,6 +24,9 @@ export class ProductSchemaDto implements ProductDto {
   code: number;
 }
 
+@Schema({
+  timestamps: false,
+})
 export class ProductSchema extends ProductSchemaDto implements Product {
   @ApiProperty()
   _id: string;
@@ -39,6 +43,8 @@ export class ProductSchema extends ProductSchemaDto implements Product {
   @ApiProperty()
   slug: string;
 }
+
+export const ProductSchemaFactory = SchemaFactory.createForClass(ProductSchema);
 
 export class ListProductsResponse {
   @ApiProperty({ isArray: true, type: ProductSchema })

@@ -14,7 +14,7 @@ import {
 import { ApiBearerAuth, ApiParam, ApiTags } from "@nestjs/swagger";
 import { User, UserDto, userSchema } from "@products-app/schemas";
 import { Request, Response } from "express";
-import { ZodValidationPipe } from "pipes/zod";
+import { ZodValidationPipe } from "../pipes/zod";
 import { UserService } from "./user.service";
 
 @Controller("users")
@@ -28,10 +28,10 @@ export class UserController {
     return this._service.findAll();
   }
 
-  @Get(":id")
-  @ApiParam({ name: "id", required: true })
-  async findOne(@Param() params: { id: string }, @Res() res: Response) {
-    const user = await this._service.findOne(params.id);
+  @Get(":email")
+  @ApiParam({ name: "email", required: true })
+  async findOne(@Param() params: { email: string }, @Res() res: Response) {
+    const user = await this._service.findOne(params.email);
 
     user.password = undefined;
 

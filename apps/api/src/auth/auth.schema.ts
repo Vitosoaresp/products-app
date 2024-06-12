@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Signin, SigninResponse, UserDto } from "@products-app/schemas";
-import { UserSchema } from "user/user.schema";
+import { UserSchema } from "../user/user.schema";
 
 export class AuthSignInDto implements Signin {
   @ApiProperty({ required: true })

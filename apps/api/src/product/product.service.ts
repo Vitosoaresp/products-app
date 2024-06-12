@@ -1,17 +1,20 @@
 import {
   BadRequestException,
-  Inject,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
 import { Product, ProductDto } from "@products-app/schemas";
 import { Model } from "mongoose";
-import { IFindAllParams, IPaginationResponse } from "types/commom";
+import { IFindAllParams, IPaginationResponse } from "../types/commom";
 import { generateSlug } from "../utils/generate-slug";
+import { ProductSchema } from "./product.schema";
 
 @Injectable()
 export class ProductService {
-  constructor(@Inject("PRODUCT_MODEL") private _model: Model<Product>) {}
+  constructor(
+    @InjectModel(ProductSchema.name) private _model: Model<Product>,
+  ) {}
 
   async findAll({
     orderBy = "updatedAt",
@@ -21,7 +24,6 @@ export class ProductService {
     sort = "desc",
   }: IFindAllParams<Product>): Promise<IPaginationResponse<Product>> {
     const skip = (Number(page) - 1) * Number(perPage);
-    console.log(search);
     const products = await this._model
       .find({
         deletedAt: null,
@@ -37,8 +39,8 @@ export class ProductService {
               $regex: search,
               $options: "i",
             },
-          }
-        ]
+          },
+        ],
       })
       .limit(Number(perPage))
       .skip(skip)
@@ -85,14 +87,14 @@ export class ProductService {
       );
     }
 
-    const createdProduct = new this._model({
+    const createdProduct = await this._model.create({
       ...payload,
       slug: generateSlug(payload.name),
       createdAt: new Date(),
       updatedAt: new Date(),
       deletedAt: null,
     });
-    return createdProduct.save();
+    return createdProduct;
   }
 
   async findOne(slug: string): Promise<Product> {
